@@ -1,0 +1,127 @@
+firstly create ec2 instance and install docker
+
+1. Create Ec2 instance with 
+	
+	- Ubuntu
+	- t2.micro
+	- SSH, HTTP in SG
+	- Key Pair
+
+2. Run Docker installation commands in ec2 instance
+
+ # sudo apt-get update
+ # sudo apt-get install \
+     ca-certificates \
+     curl \
+     gnupg \
+     lsb-release 
+ # sudo mkdir -p /etc/apt/keyrings
+ # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+ # echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+ # sudo apt-get update
+ # sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+ # docker --version
+ # docker info ------Debug Client Mode is: docker server is off
+ # service docker {start|stop|restart|status}
+
+###########################################################################################################################################
+
+1. by default root directory of docker is
+	
+	Docker Root Dir: /var/lib/docker
+
+2. docker images -- images inside docker
+	
+3. docker ps -- show running containers
+	
+4. docker ps -a -- show running and stop containers, it runs outside the container only. have to logged out into container
+	
+5. docker run -it ubuntu /bin/bash -- download container from Dockerhub.com & logged in into container
+					     -- root@d72037e75c33:/#
+					     -- whenever you hit this command every time new container will create. check it from # docker ps -a & "Image is only 1"
+
+6. root@d72037e75c33:/# cat /etc/os-release -- to check which OS running on "container"
+
+7. root@d72037e75c33:/# exit -- loggoud out from container & container will stop working.
+	
+8. root@ip-172-30-0-51:~# docker images -- to check docker images.
+
+9. docker pull jenkins/jenkins -- It save only Image into docker engine --> Layer by layer downloaded
+					 -- after pulling run it via docker { docker run -it <pulled_image_name> /bin/bash }
+
+10. docker search <image_name> -- show info of saved images on "Dockerhub" W/O going dockerhub
+
+11. dcoker run -it --name <name> <image_name> /bin/bash -- Create and Start the container {# docker ps -a}
+
+    # docker create -- create the container
+
+12. docker start <container_name> --Run the container # chech via using # docker ps
+
+13. docker attach <continer_name> --loggin into running container chech via 
+
+14. docker rm <container_name> -- to delete container "NOTE:- before deleting container must be stopped, running container will not be delete"
+					 -- #docker ps -a __ check weather container deleted or not!!
+
+15. docker inspect <image_name_ID> --"Note:- for inspect container shall be start" --> it shows all image related information will showed. 
+
+    docker inspect <container_ID> -- show information about running container. (High level information) 	
+
+	"Note:- Docker works on bridge network ip is 172.17.0.0/16" --> this one is container IP 
+
+16. docker run -d nginx -- save & download nginx in Docker engine in current pwd, operation will done in background and it will not logged in into container.
+				-- # docker ps __ show running container
+
+17. docker network ls -- show all network-id of dockers bridge network
+			    -- #docker inspect <network_id> __ it will show info of bridge network
+			    -- curl <docker_bridge_ip> __ it will show nginx page.
+
+18. docker exec --it <container_ip> /bin/bash --logged in into container shell
+ 		    -- curl localhost
+
+19. docker container rm -f <container_ip> -- to delete container , #docker ps __check container deleted or not.
+
+20. docker run -d -P --name art-nginx nginx
+		
+		 (P= nginx exposed on random port number, we don't have to specify perticular port)
+
+21. docker run -d -p 80:80 --name art-nginx2 nginx
+    docker run -d -p 8080:80 --name art-nginx3 nginx [starting port-8080 is desired port no__ 80 is application port no]
+
+22. docker prune --[delete useless container, volume not attached, multiple image not is in used]
+
+23. docker container prune -- delete all container  
+
+24. docker run -d --expose 8080 -p 8080:80 --name art-nginx nginx
+
+25. docker diff <container_name> -- it give information about changes happed in that image
+
+26. docker commit <container_name> <new_image_name> --it will create an "Image of Updated Container"__for shaing purpose
+
+27. docker run -it --name <new_container_name> <updated_image_name> /bin/bash -- create new updated container from updated shared image 
+
+28. docker build -t <new_image_name> . -- [-t for tag, . for run all operation in dockerfile while present in pwd] 
+
+29. docker run -it --name <container_name> --privileged=true --volumes-from <voluming_taking_container> ubuntu /bin/bash
+
+    docker run -it --name container4 --privileged=true --volumes-from container3 ubuntu /bin/bash ....[container4 will get the volume of container3]
+
+30. docker run -it --name hostcont -v /home/ubuntu:/jarvis --privileged=true ubuntu /bin/bash .......[/host <---> /Container]...[: colan is do mapping in between 2 volumes]
+
+31. docker run -td --name techserver -p 80:80 ubuntu ...[only docker create and start, it will not logged in, -p is port/publish hosts port mapped with container port]
+
+32. docker login .....[to login into dockerhub from terminal]
+
+33. docker logout ....[to logout into dockerhub from terminal]
+
+34. docker tag <tag_name> <username>/<repository_name>  .....[to give tag and name of to be uploaded image ]
+
+35. docker push <username>/<repository_name>  ....[push image into dockerub]
+
+36. docker pull chetansomkuwar/dockerhub_jarvis_image:latest  ....[recommend to take from dockerhub repo]
+
+
+https://www.jenkins.io/doc/book/installing/docker/
+
+Youtube Interview Que:- Deekshit SN https://www.youtube.com/watch?v=yPoDiW04qIo

@@ -1,0 +1,57 @@
+1. Create Ec2 instance with 
+	
+	- Ubuntu
+	- t2.micro
+	- SSH, HTTP in SG
+	- Key Pair
+
+2. Run Docker installation commands in ec2 instance
+
+ # sudo apt-get update
+ # sudo apt-get install \
+     ca-certificates \
+     curl \
+     gnupg \
+     lsb-release 
+ # sudo mkdir -p /etc/apt/keyrings
+ # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+ # echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+ # sudo apt-get update
+ # sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+ # docker --version
+ # service docker start
+ # service docker status
+
+######################################### Practicle ################################################################
+
+ # docker run --name jarvis_container_1 -it ubuntu /bin/bash
+ # cat /etc/os-release
+ # ls
+ # touch /tmp/jarvis_file
+ # exit
+ # docker ps -a
+ # docker diff jarvis_container_1 -- it give information about changes happed in that Container
+ 
+	################### D=Deletion, C= Change, A = Append+Addition ######################		
+
+	C /root
+	A /root/.bash_history
+	C /tmp	
+	A /tmp/jarvis_file
+
+ :: Now, Create a Image of Updated Container 
+
+ # docker commit jarvis_container_1 updated_jarvis_image
+ # docker images
+
+ ::Note:- Now, we can share this image to anyone for that upload image into "Dockerhub" & Another user will pull it into his Docker Engine --> Run it
+ 
+ In our case we run it on our same docker engine.
+
+ # docker run -it --name jarvis_container_2 updated_jarvis_image /bin/bash
+ # ls /tmp
+ # exit
+ # docker images
+ # docker ps -a

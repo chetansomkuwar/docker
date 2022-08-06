@@ -1,0 +1,18 @@
+ Firstly Create EC2 instance and install docker in that instance & get ssh into moba.
+
+# docker run -td --name techserver -p 80:80 ubuntu 
+# docker ps
+# docker port techserver
+# docker exec -it techserver /bin/bash
+# apt-get update 
+# apt-get install apache2 -y
+# echo "Hello Jarvis, where is tony ?" > var/www/html/index.html
+# cat /var/www/html/index.html
+# service apache2 start
+# # service apache2 status
+
+Now, hit Public IP of ec2 instance.
+
+# exit
+# docker run -td --name myjenkins -p 8080:8080 jenkins
+# 

@@ -1,0 +1,86 @@
+ # vim dockerbuild
+	FROM ubuntu
+	VOLUME ["/myvolume1"]
+
+# docker build -t myimage .  [...create an a image]
+# docker images  [..show images]
+# docker run -it --name container1 myimage /bin/bash  [.. create and run container]
+# ls
+# cd myvolume1/
+# touch filex filey filez
+# exit
+
+Now, Create a New container and share this volume with new one.
+
+# docker run -it --name container2 --privileged=true --volumes-from container1 ubuntu /bin/bash
+# cd myvolume1/
+# ls
+
+Now, we start and use container1 and re-edit the all files and check wetaher all fies refleccting or not ?
+
+# docker start container1
+# docker attach container1
+# ls
+# touch 111
+# exit
+
+Now, Check in container2 111 file is updated or not ?
+
+# docker start container2
+# docker attach container2
+# cd myvolume1/
+# ls
+
+O/P:- here our all files are attached and updated from container1 to container2
+
+Now, "CREATE VOLUME BY USING COMMAND"
+
+# docker run -it --name container3 -v /volume2 ubuntu /bin/bash
+# cd volume1
+# touch sandesh shubham
+# exit 
+
+Now, create another container and share this volume2 with new container
+
+# docker run -it --name container4 --privileged=true --volumes-from container3 ubuntu /bin/bash
+# cd volume2
+# ls
+# touch pranayfile
+# exit
+
+NOTE:- we created file named with pranayfile in container4 in volume2 so now we check container3's volume2 this file is updated or not ?
+
+# docker start container3
+# docker attach container4
+# cd volume2
+# ls
+
+
+Now, Mapping, synchronious in between2 volumes (Host <--> Container)
+
+# pwd:- /home/ubuntu
+# ls
+# touch file1 file2 file3
+# docker run -it --name hostcont -v /home/ubuntu:/jarvis --privileged=true ubuntu /bin/bash
+# cd jarvis
+# ls
+
+NOTE:- here my host files are mapped with container volume
+
+Now, i create some one file in container and it will mapped and reflect in host directory /home/ubuntu
+
+# exit
+# docker start hostcont
+# docker attach hostcont
+# cd jarivs
+# ls
+# touch kt1
+
+Now, now i will check kt1 file in host volume (/home/ubuntu)
+
+# cd /home/ubuntu
+# ls
+
+
+
+

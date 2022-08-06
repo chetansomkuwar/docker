@@ -1,0 +1,34 @@
+DOCKER_FILE --> IMAGE --> CONTAINER
+
+# vim Dockerfile
+	FROM ubuntu
+	RUN echo "hello jarvis & spider calling from tony stark" > /tmp/testfile
+
+# docker build -t jarvisdockimage ......(Our image is finally created from Dockerfile)
+# docker run -it --name jarvis_test_container jarvisdockimage /bin/bash......(we succsesfully created container from created Image [Df])
+# cat /tmp/testfile
+# exit
+
+################################# Change the containt from exisiting docker file #################################################
+
+Now, we change the containt from existing docker file and see the changes
+
+# touch testfile1 && touch test
+# vim Dockerfile
+	FROM ubuntu
+	WORKDIR /tmp
+	RUN echo "hello, my name is chetan somkuwar" > /tmp/testfile
+	ENV myname jarvis stark
+	COPY testfile1 /tmp
+	ADD test.tar.gz /tmp
+
+# tar -cvf test.tar test
+# gzip test.tar
+# rm -rfv test
+# docker build -t newimage1 . /............ now our updated image is created from docker file
+# docker images
+# docker run -it --name newcontainer newimage1 /bin/bash ...... created container from updated image
+	root@b4939211a98e:/tmp# ls
+				    # echo $myname
+	
+

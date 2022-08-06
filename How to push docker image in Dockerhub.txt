@@ -1,0 +1,58 @@
+Firstly create ec2 instance and install docker in that instance
+
+# docker run -it ubuntu /bin/bash
+# touch file1 test1 test2 xyz cccfile
+# ls
+# cd tmp
+# touch new1 new2 new3
+# exit
+# docker images
+# docker ps -a
+# docker commit eager_swartz jarvis_image    ...........[Create iamge of that container]
+# docker images
+
+Now, Sign in hub.dockerhub.com & Verify it through mailconfig.json
+
+# docker login (provide username & password)
+	 here docker username and password stored in encrypted formate in cat /root/.docker/config.json
+
+Now, push image in dockerhub 
+
+# docker tag jarvis_image chetansomkuwar/dockerhub_jarvis_image ...[give tag and name for that image]
+# docker push chetansomkuwar/dockerhub_jarvis_image
+	here my image successfully uploaded in dockerhub
+
+Now, we create another ec2 instance in another region and create container via this image
+ 
+1.) Create ec2 instance in North. Verg Region
+2.) Install Docker in that ec2 instance
+3.) Pull the uploaded image in docker engine
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Now, Make our file and Repository "Public"
+
+# docker pull chetansomkuwar/dockerhub_jarvis_image:latest  ...[take this command from dockerhub repository]
+# docker images
+
+Now, Create container from that image
+
+# docker run -it --name mycontainer1 chetansomkuwar/dockerhub_jarvis_image /bin/bash
+# ls
+# ls /tmp
+
+-------------------------------------------------------------------------------------------------------------------------
+
+Now, Make our file and Repository "Private" in Dockerhub --> Setting now they asked # docker login
+
+# docker pull chetansomkuwar/dockerhub_jarvis_image:latest
+# error
+# docker login
+# docker pull chetansomkuwar/dockerhub_jarvis_image:latest
+
+Now, Create container from that image
+
+# docker run -it --name mycontainer1 chetansomkuwar/dockerhub_jarvis_image /bin/bash
+# ls
+# ls /tmp
+
