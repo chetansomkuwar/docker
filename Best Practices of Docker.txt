@@ -1,0 +1,97 @@
+1.) Use official Docker Images as Base Image
+
+	- Don't take Base OS Images or Install Package by Ourself (From ubuntu)
+	- Always use official "node" image as base image (From node)
+
+2.) Always use Specific Image versions
+
+	- Fixed the specific version (FROM node:17.0.1)
+	- giving specific version is always better
+	- don't use only name and random tags
+
+3.) Use small size official Image (FROM node:17.0.1-alpine)
+
+	(if we don't require any specific utilities, choose leaner and smaller OS distribution)
+
+	- Don't take only (From node:17.0.1 based on fully-blown OS, means already downloaded lots of un-required softwares due security issue will form)
+	- Always get Smaller images
+	- it will get Less storrage space
+	- we can able to transfer images fastly
+	- we can easily and fastly pull/push that images from repository <---> server
+
+4.) Optimizing Caching Image Layers, when building and image
+
+	What are image Layer ?
+	-> Layer by Layer commands in Dockerfile
+	
+	What is image chaching ?
+	-> ubuntu v1 push/pull his config are stored and after that ubuntu v2 push/pull latest new updated config will be installed old one will not installed because, they already are stored into our localfile system like cache memory
+
+	Dockerfile Instruction:-
+	
+	1. Use Node Alpine image as base image
+	2. Go to /app folder & copy project files into the Docker Image
+	3. Install project dependancies with "npm install"
+	4. Dockerfile commands from least ---> most frequesntly changing (bottom of the docker file put majorly changable commands)
+		* Take Advantage of cachinf for fast response of application
+		* Faster Image building and fetching
+
+5.) Use (.dockerignore file) to ignore auto-generated files and folders (like targe, build, README files)
+
+	--> we have to exclude these folders and files to "reduce image size" use .dockerignore file
+
+		1. Create .dockerignore file in the /root
+		2. List files and folder you want to ignore
+		
+
+6.) Use Multi-Stage Build (for diffrent )
+
+	- Any is having to struggled to optimized the docker file, while keeping them easy to read.
+	- Many time user wan to delete unwanted things and also want to keep simple.
+		(like Test dependancies, Development tools, Temporary files, Build Tools like maven to build java application those are not neede in final application)
+
+		1. we can use multiple FROM statements in your Dockerfile
+		2. so we saperate "Build Stage" into "Runtime stage" into dockerfile
+...............................................
+  #Build stage
+ 	FROM maven AS build
+	WORKDIR /app
+	COPY myapp /app
+	RUN mvn package
+
+ #Run stage
+	FROM tomcat
+	COPY --from=build /app....
+..................................................
+
+	:: Final Application Image will be cerated only in the last stage, and all files and tools first stage will be discarded once it's completed
+	 it saperate Applciation, Build tools and dependancies from run time --> give images in less dependancies and much smaller in size.
+
+
+7.) Use least privileged User 
+
+	- bad security practice, when container start hosts will get directly get "Root" access.
+	- easy privilege escalation for an attackers 
+
+		
+		1. Create dedicated user and group
+		2. Set required permission
+		3. swtich root user to non-root user
+..................................................
+
+ # create group and user
+ RUN chown -r tom && useradd -g tom tom
+ 
+ # set ownership and permission 
+ RUN chown -R tom:tom /app
+
+ #switch to user
+ USER tom
+
+ CMD node index.js
+..................................................
+
+8.) Scan your Images for security Vulnerabilities (..using #docker scan) have to logged in into dockerhub
+
+
+
