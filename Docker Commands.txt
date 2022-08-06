@@ -127,8 +127,6 @@ firstly create ec2 instance and install docker
 
 39. docker rmi $(docker images -q) .........[to delete all images]
 
-39. 
-
 
 https://www.jenkins.io/doc/book/installing/docker/
 
