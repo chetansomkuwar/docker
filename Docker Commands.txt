@@ -121,6 +121,14 @@ firstly create ec2 instance and install docker
 
 36. docker pull chetansomkuwar/dockerhub_jarvis_image:latest  ....[recommend to take from dockerhub repo]
 
+37. docker stop $(docker ps -a -q) .........[to stop all running containers]
+
+38. docker rm $(docker ps -a -q) .........[to delete all stopped container]
+
+39. docker rmi $(docker images -q) .........[to delete all images]
+
+39. 
+
 
 https://www.jenkins.io/doc/book/installing/docker/
 
